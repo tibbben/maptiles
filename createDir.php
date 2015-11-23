@@ -2,7 +2,9 @@
 
 /* createDir.php - creates directory structure for tileCutterDir.php      */
 
-/* Written by Tim Norris - 2008 - tibben@ocf.berkeley.edu                 */
+/* Written by Tim Norris - 2008 - tibben@ocf.berkeley.edu                 
+   published under the GNU general public license: 
+   http://www.gnu.org/licenses/gpl-3.0.en.html                            */
 
 /* Create a directory structure to rip tiles into. You may need to 
    create the very top level folders manually depending at what level
@@ -29,11 +31,11 @@ $_type = 1;                            /* 1: regular map
                                           2: hybrid map                       */
 $_renderLayers = array(8,11,14,17);    /* list of layers to actually draw     */
 
-// UMOffice define local write directory
-$write_dir = "C:/Sync/Miami/projects/pilots/PulleyRidge/";                       /* location of tile directory */
-$_statfile = "C:\Sync\Miami\projects\pilots\PulleyRidge\\fstat.log";             /* location and name of stat file */
-$_errorfile = "C:\Sync\Miami\projects\pilots\PulleyRidge\\tileCutter.log";       /* location and name of log file */
-$_mapfiledir = "C:\Sync\Miami\projects\pilots\PulleyRidge\\tools\mapserver\\";   /* location of the cartogrpaphy definitions */
+// local write directories
+$write_dir = "<your_tile_directory>";
+$_statfile = "<folder_location_for_render_stats>";
+$_errorfile = "<folder_location_for_render_log>\\tileCutter.log";
+$_mapfiledir = "<folder_location_of_mapfiles>";
 
 // set map type (including the top level folder name for the tiles)
 if ($_type == 1) { $s = ''; $write_dir = $write_dir."tiles/"; } else { $s = 's'; $write_dir = $write_dir."stiles/"; }

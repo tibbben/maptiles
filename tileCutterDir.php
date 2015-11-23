@@ -2,7 +2,9 @@
 
 /* tilecutter.php - tilecutter for google style map tiles                      */
 
-/* Written by Tim Norris - 2008 - tibben@ocf.berkeley.edu                      */
+/* Written by Tim Norris - 2008 - tibben@ocf.berkeley.edu                 
+   published under the GNU general public license: 
+   http://www.gnu.org/licenses/gpl-3.0.en.html                                 */
 
 /* Rip tiles for various zoom levels for the google maps interface.
    You must first project all of your data into the google projection
