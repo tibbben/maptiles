@@ -1,22 +1,22 @@
 <?php
 
-/* tilecutter.php - tilecutter for google style map tiles      */
+/* tilecutter.php - tilecutter for google style map tiles                      */
 
-/* Written by Tim Norris - 2008 - tibben@ocf.berkeley.edu      */
+/* Written by Tim Norris - 2008 - tibben@ocf.berkeley.edu                      */
 
 /* Rip tiles for various zoom levels for the google maps interface.
    You must first project all of your data into the google projection
    and then create MapServer map files for the zoom levels that you 
    want to create. Once everything is ready it is best to run this
-   as a command line application.                               */
+   as a command line application.                                              */
 
 
 /* **************************************************************
                     ENTER THE DRAW OPTIONS HERE
    change the variables to meet your draw needs, save the file,
    and then run at the command lines as: 
-   c:\Archivos de programa\mapserver\buscador\php\tools>php tileCutter.php
-   ************************************************************** */
+   > php tileCutterDir.php
+   **************************************************************              */
 
 $_zoomstart = 15;                     /* start drawing at this zoom level                                      */
 $_zoomend =15;                        /* end drawing at this level                                             */
@@ -39,10 +39,16 @@ if ($_type == 1) { $s = ''; $write_dir = $write_dir."tiles/"; } else { $s = 's';
 $bounds = array(); // the bounds as tile names for the render (zoom)(f_y,f_x,l_y,l_x)
 switch($_area) {
   case 1:
-        // each zoom level rendered needs an array defined as written 
+        /* each zoom level rendered needs an array defined as written 
+           these bounds can be calculated using the BoundsCalculator.xlsx
+           TODO: build the BoundsCalculator into this script so that these 
+                 extents are automatically calculated from WGS84 lat long coords */
 	$bounds[<zoomLevel>] = array(<MIN_Y>,<MIN_X>,<MAX_Y>,<MAX_X>);
         break;
 }
+
+// NOTE: don't forget to make yout MapServer MapFiles (see their documentation) enter the <base> name here
+$mapFileBase = "<your_MapFile_baseName>"; 
 
 /* **************************************************************
                         END OF DRAW OPTIONS
@@ -77,9 +83,7 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
  if (in_array($zoom,$_renderLayers)) {
 
  $value	= Google_Tile_Factors($zoom, $tileSize) ; // Calculate Tile Factors
- //$ms_map = ms_newMapObj($_mapfiledir.'pulley'.$s.'_'.$zoom.'.map'); // load the correct map
- //$ms_map = ms_newMapObj($_mapfiledir.'pulley.map'); // load the correct map
- $ms_map = ms_newMapObj($_mapfiledir.'santo.map'); // load the correct map
+ $ms_map = ms_newMapObj($_mapfiledir.$mapFileBase.$s.'_'.$zoom.'.map'); // load the correct map
 
  // get the tile names
  $first['NAMEY'] = $bounds[$zoom][0];
