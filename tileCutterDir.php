@@ -63,13 +63,18 @@ $errors = fopen($_errorfile, "a");
 fwrite ($errors," ----------------------------------------------------------------\n");
 
 // set up local variables
-$refZoom     = 12;
-$muestra     = false;
+$refZoom     = 12 ;
+$muestra     = false ;
 $tileSize    = 256 ;
 $parwho      = 'Whole';
 $x           = '' ;
 $tile        = array( ) ;
 $i           = 0 ;
+$html_br     = '' ;
+$html_column_end = '' ;
+$html_column_start = '' ;
+$html_row_end = '' ;
+$html_table_end = '' ;
 
 $ret	=  array() ;
 $first	=  array() ;				// First Results Hash
@@ -118,7 +123,7 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
  {
   print "\t$x: $item$html_br\n" ;
  }
- print "$htm_column_end$htm_column_start";
+ print "$html_column_end$html_column_start";
  print "Last$html_br\n";
  foreach ($last as $x => $item)
  {
@@ -152,6 +157,7 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
    for ($ty=0;$ty<=$gridHeight;$ty++) {
     $img_map = $ms_map->prepareImage();
     $img_map->pasteImage($whole_map,-1,(-1*$tileSize*$tx),(-1*$tileSize*$ty));
+    // $path must be set if not starting on zoom level 1
     $path = "";
     // j=4 sets the top level directory to the fourth level
     for ($j=4;$j<=$_directoryLevels;$j++) { 
@@ -293,6 +299,7 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
     for ($ty=1;$ty<=($quads['YDIM']);$ty++) {
      $img_map = $ms_map->prepareImage();
      $img_map->pasteImage($whole_map,-1,(-1*$tileSize*$tx),(-1*$tileSize*$ty));
+     // $path must be set if not starting on zoom level 1
      $path = "";
      // j=4 sets the top level directory to the fourth level
      for ($j=4;$j<=$_directoryLevels;$j++) { 
