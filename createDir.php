@@ -62,13 +62,18 @@ $errors = fopen($_errorfile, "a");
 fwrite ($errors," ----------------------------------------------------------------\n");
 
 // set up local variables
-$refZoom     = 12;
-$muestra     = false;
+$refZoom     = 12 ;
+$muestra     = false ;
 $tileSize    = 256 ;
 $parwho      = 'Whole';
 $x           = '' ;
 $tile        = array( ) ;
 $i           = 0 ;
+$html_br     = '' ;
+$html_column_end = '' ;
+$html_column_start = '' ;
+$html_row_end = '' ; 
+$html_table_end = '' ;
 
 $ret	=  array() ;
 $first	=  array() ;				// First Results Hash
@@ -116,7 +121,7 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
  {
   print "\t$x: $item$html_br\n" ;
  }
- print "$htm_column_end$htm_column_start";
+ print "$html_column_end$html_column_start";
  print "Last$html_br\n";
  foreach ($last as $x => $item)
  {
@@ -135,6 +140,7 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
   // cut whole image into tiles
   for ($tx=0;$tx<=$gridWidth;$tx++) {
    for ($ty=0;$ty<=$gridHeight;$ty++) {
+    // $path must be set if not starting at zoom level 1
     $path = "";
     // j=4 means the top level is the fourth level directory
     for ($j=4;$j<=$_directoryLevels;$j++) { 
