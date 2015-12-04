@@ -34,8 +34,8 @@ $_statfile = "<folder_location_for_render_stats>";
 $_errorfile = "<folder_location_for_render_log>\\tileCutter.log";
 $_mapfiledir = "<folder_location_of_mapfiles>";
 
-// set map type (including the top level folder name for the tiles)
-if ($_type == 1) { $s = ''; $write_dir = $write_dir."tiles/"; } else { $s = 's'; $write_dir = $write_dir."stiles/"; }
+// set map type (including the top level folder name for the tiles) ** this probably will be taken out
+// if ($_type == 1) { $s = ''; $write_dir = $write_dir."tiles/"; } else { $s = 's'; $write_dir = $write_dir."stiles/"; }
 
 // the bounding tiles for the renders as (MIN_Y, MIN_X, MAX_Y, MAX_X)
 $bounds = array(); // the bounds as tile names for the render (zoom)(f_y,f_x,l_y,l_x)
@@ -66,7 +66,7 @@ fwrite ($errors," --------------------------------------------------------------
 $refZoom     = 12 ;
 $muestra     = false ;
 $tileSize    = 256 ;
-$parwho      = 'Whole';
+$parwho      = 'Whole' ;
 $x           = '' ;
 $tile        = array( ) ;
 $i           = 0 ;
@@ -88,6 +88,9 @@ $proj_google = ms_newprojectionobj('+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0
 for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
 
  if (in_array($zoom,$_renderLayers)) {
+
+ // create the zoom level directory if needed
+ if (!file_exists($write_dir."/".$zoom)) { mkdir($write_dir."/".$zoom); }
 
  $value	= Google_Tile_Factors($zoom, $tileSize) ; // Calculate Tile Factors
  $ms_map = ms_newMapObj($_mapfiledir.$mapFileBase.$s.'_'.$zoom.'.map'); // load the correct map
@@ -157,7 +160,9 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
    for ($ty=0;$ty<=$gridHeight;$ty++) {
     $img_map = $ms_map->prepareImage();
     $img_map->pasteImage($whole_map,-1,(-1*$tileSize*$tx),(-1*$tileSize*$ty));
-    // $path must be set if not starting on zoom level 1
+
+/*  The old skip 3 zoom level directory structure  
+    // $path must be set if you are not starting at zoom level 1
     $path = "";
     // j=4 sets the top level directory to the fourth level
     for ($j=4;$j<=$_directoryLevels;$j++) { 
@@ -166,8 +171,13 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
        $ny = floor(($ty+$first['NAMEY'])/(pow(2,$zoom-$zl))); 
        $lpath = $zl."_".$nx."_".$ny;
        $path = $path.$lpath."/";
-    }
-    $img_map->saveImage($write_dir.$path.$zoom."_".($tx+$first['NAMEX'])."_".($ty+$first['NAMEY']).".png");
+    } */
+
+    // create the x directory if needed
+    if (!file_exists($write_dir."/".$zoom."/".($tx+$first['NAMEX']))) { mkdir($write_dir."/".$zoom."/".($tx+$first['NAMEX'])); }
+
+    // folders are now /zoom/x/y.png
+    $img_map->saveImage($write_dir.$zoom."/".($tx+$first['NAMEX'])."/".($ty+$first['NAMEY']).".png");
     unset($img_map);
    }
   } 
@@ -299,7 +309,9 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
     for ($ty=1;$ty<=($quads['YDIM']);$ty++) {
      $img_map = $ms_map->prepareImage();
      $img_map->pasteImage($whole_map,-1,(-1*$tileSize*$tx),(-1*$tileSize*$ty));
-     // $path must be set if not starting on zoom level 1
+
+     /* old skip three directory structure
+     // $path must be set if you are not starting at zoom level 1
      $path = "";
      // j=4 sets the top level directory to the fourth level
      for ($j=4;$j<=$_directoryLevels;$j++) { 
@@ -308,8 +320,12 @@ for ($zoom=$_zoomstart; $zoom<=$_zoomend; $zoom++) {
         $ny = floor(($ty+$quadFirst[$i]['NAMEY'])/(pow(2,$zoom-$zl))); 
         $lpath = $zl."_".$nx."_".$ny;
         $path = $path.$lpath."/";
-     }
-     $img_map->saveImage($write_dir.$path.$zoom."_".($tx+$quadFirst[$i]['NAMEX'])."_".($ty+$quadFirst[$i]['NAMEY']).".png");
+     } */
+
+     // create the x directory if needed
+     if (!file_exists($write_dir."/".$zoom."/".($tx+$quadFirst[$i]['NAMEX']))) { mkdir($write_dir."/".$zoom."/".($tx+$quadFirst[$i]['NAMEX'])); }
+
+     $img_map->saveImage($write_dir.$zoom."/".($tx+$quadFirst[$i]['NAMEX'])."/".($ty+$quadFirst[$i]['NAMEY']).".png");
      unset($img_map);
     }
    }  
